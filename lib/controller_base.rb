@@ -41,12 +41,16 @@ class ControllerBase
   # use ERB and binding to evaluate templates
   # pass the rendered html to render_content
   def render(template_name)
-    raise "double render" if @already_built_response
-    @already_built_response = true
-     html = <<-HTML
+    hack = self.class.name.split("")
+    hack.pop(10)
+    # p self.class.name
+    controller_name = "#{hack.join("").downcase}_controller"
 
-     HTML
-     res.write(html)
+    template = File.read("views/#{controller_name}/#{template_name}.html.erb")
+
+    render_content(
+     ERB.new(template).result(binding), "text/html"
+     )
 
   end
 
