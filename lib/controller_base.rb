@@ -36,6 +36,7 @@ class ControllerBase
     @already_built_response = true
     @res.write(content)
     res['Content-Type'] = content_type
+    store_session(@res)
   end
 
   # use ERB and binding to evaluate templates
@@ -51,12 +52,12 @@ class ControllerBase
     render_content(
      ERB.new(template).result(binding), "text/html"
      )
-
+     store_session(@res)
   end
 
   # method exposing a `Session` object
   def session
-    @Session = {}
+    @session ||= Session.new(@req)
   end
 
   # use this with the router to call action_name (:index, :show, :create...)
