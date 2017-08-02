@@ -24,7 +24,6 @@ class ControllerBase
   def redirect_to(url)
     raise "double render" if @already_built_response
     @already_built_response = true
-    # @req.path = url
     @res.redirect(url, status= 302)
    self.session.store_session(res)
   end
@@ -45,7 +44,6 @@ class ControllerBase
   def render(template_name)
     hack = self.class.name.split("")
     hack.pop(10)
-    # p self.class.name
     controller_name = "#{hack.join("").downcase}_controller"
 
     template = File.read("views/#{controller_name}/#{template_name}.html.erb")

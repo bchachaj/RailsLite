@@ -17,10 +17,7 @@ class Route
   # instantiate controller and call controller action
   def run(req, res)
     data = @pattern.match(req.path)
-    p data
-    p data.captures
     route_params = Hash[data.names.zip(data.captures)]
-
     @controller_class.new(req, res, route_params).invoke_action(action_name)
   end
 end
